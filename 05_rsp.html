@@ -14,21 +14,44 @@
             height: 200px;
             display: inline-block;
         }
+        button{
+            width: 60px;
+            height: 60px;
+            border-radius: 30px;
+        }
+        #result{
+            width: 300px;
+            height: 300px;
+            background-color: rgb(241, 241, 241);
+            box-shadow: 0px 0px 5px 5px rgb(222, 222, 222);
+            margin: auto;
+            border-radius: 30px;
+        }
+        h3{
+            padding-top: 10px;
+        }
     </style>
 </head>
 <body>
-    <h1>가위바위보족을 한번이겨보세요</h1>
-    <h6>할수있다면..</h6>
+    <h1>가위바위보족을 한번 이겨보세요</h1>
+    <h6>할수있다면.. (5판3선승제임)</h6>
     <div id="computer"></div>
     <div>
         <button id="scissor" class="btn">가위</button>
         <button id="rock" class="btn">바위</button>
         <button id="paper" class="btn">보</button>
     </div>
-    <div id="score">0</div>
+    <div id="result">
+        <h3>승부 결과</h3>
+        <div id="message"></div>
+        <div id="endimg"></div>
+        <div id="score"></div>
+    </div>
     <script>
         const $computer = document.querySelector('#computer');
         const $score = document.querySelector('#score');
+        const $message = document.querySelector('#message');
+        const $endimg = document.querySelector('#endimg');
         const $cscissor = document.querySelector('#scissor');
         const $rock = document.querySelector('#rock');
         const $paper = document.querySelector('#paper');
@@ -43,7 +66,8 @@
         };
 
         let comChoice = 'scissor';
-        setInterval(() =>{
+
+        const chageComHand = () =>{
             if(comChoice === 'scissor'){ //가위
                 comChoice = 'rock';
             }
@@ -55,7 +79,63 @@
             }
             $computer.style.background = `url(${IMG_URL}) ${rspX[comChoice]} 0`;
             $computer.style.backgroundSize = 'auto 200px';
-        }, 50)
+        }
+
+        let intervalId = setInterval(chageComHand, 50);
+        let clickable = true;//연속 누르기 버그 방지
+        let myscore = 0;
+        let comscore = 0;
+        const clickButton = () => {
+            if (clickable) {
+                clearInterval(intervalId);
+                clickable = false;
+                //점수계산 및 화면표시
+                let message = '';
+                const myChoice = event.target.id;
+                if(myChoice === comChoice){
+                    message = '무승부'; 
+                }
+                else if((myChoice === 'scissor' && comChoice === 'paper') || (myChoice === 'rock' && comChoice === 'scissor') ||(myChoice === 'paper' && comChoice === 'rock')){
+                    myscore +=1;
+                    message = '승리!'; 
+                }
+                else{
+                    comscore +=1;
+                    message = '패배..'; 
+                }
+                $message.textContent = `${message}`;
+                $score.textContent = `당신: ${myscore} vs 가위바위보족 ${comscore}`;
+                setTimeout(() => {
+                    clickable = true;
+                    intervalId = setInterval(chageComHand, 50);
+                }, 1000);
+                if(myscore === 3){
+                    win();
+                }
+                else if(comscore === 3){
+                    lose();
+                }
+            }
+        }
+
+        $rock.addEventListener('click', clickButton);
+        $cscissor.addEventListener('click', clickButton);
+        $paper.addEventListener('click', clickButton);
+
+        const win = () =>{
+            $message.style.color = 'blue';
+            $message.textContent = `축하합니다. 가위바위보족을 이기셨습니다!`;
+            $rock.removeEventListener('click', clickButton);
+            $cscissor.removeEventListener('click', clickButton);
+            $paper.removeEventListener('click', clickButton);
+        }
+        const lose = () =>{
+            $message.style.color = 'blue';
+            $message.textContent = `졌습니다..이런날도 있는거죠 뭐..ㅠ`;
+            $rock.removeEventListener('click', clickButton);
+            $cscissor.removeEventListener('click', clickButton);
+            $paper.removeEventListener('click', clickButton);
+        }
     </script>
 </body>
 </html>
