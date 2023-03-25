@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>가위바위보</title>
+    <style>
+        *{
+            text-align: center;
+        }
+        #computer{
+            width: 131px;
+            height: 200px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <h1>가위바위보족을 한번이겨보세요</h1>
+    <h6>할수있다면..</h6>
+    <div id="computer"></div>
+    <div>
+        <button id="scissor" class="btn">가위</button>
+        <button id="rock" class="btn">바위</button>
+        <button id="paper" class="btn">보</button>
+    </div>
+    <div id="score">0</div>
+    <script>
+        const $computer = document.querySelector('#computer');
+        const $score = document.querySelector('#score');
+        const $cscissor = document.querySelector('#scissor');
+        const $rock = document.querySelector('#rock');
+        const $paper = document.querySelector('#paper');
+        const IMG_URL = './jokersp.jfif';
+        $computer.style.background = `url(${IMG_URL}) 0 0`;
+        $computer.style.backgroundSize = 'auto 200px';
+
+        const rspX = {
+            scissor: '-230px',
+            rock:'-117px',
+            paper:'2px'
+        };
+
+        let comChoice = 'scissor';
+        setInterval(() =>{
+            if(comChoice === 'scissor'){ //가위
+                comChoice = 'rock';
+            }
+            else if(comChoice === 'rock') { //바위
+                comChoice = 'paper';
+            }
+            else{ //보
+                comChoice = 'scissor';
+            }
+            $computer.style.background = `url(${IMG_URL}) ${rspX[comChoice]} 0`;
+            $computer.style.backgroundSize = 'auto 200px';
+        }, 50)
+    </script>
+</body>
+</html>
