@@ -105,15 +105,17 @@
                 }
                 $message.textContent = `${message}`;
                 $score.textContent = `당신: ${myscore} vs 가위바위보족 ${comscore}`;
-                setTimeout(() => {
-                    clickable = true;
-                    intervalId = setInterval(chageComHand, 50);
-                }, 1000);
                 if(myscore === 3){
                     win();
                 }
                 else if(comscore === 3){
                     lose();
+                }
+                else{
+                    setTimeout(() => {
+                    clickable = true;
+                    intervalId = setInterval(chageComHand, 50);
+                }, 1000);
                 }
             }
         }
@@ -125,16 +127,14 @@
         const win = () =>{
             $message.style.color = 'blue';
             $message.textContent = `축하합니다. 가위바위보족을 이기셨습니다!`;
-            $rock.removeEventListener('click', clickButton);
-            $cscissor.removeEventListener('click', clickButton);
-            $paper.removeEventListener('click', clickButton);
+            $computer.style.background = `url(./rspwin.jpg)`;
+            $computer.style.backgroundSize = '100%';
+            $computer.style.backgroundRepeat = 'no-repeat';
         }
         const lose = () =>{
             $message.style.color = 'blue';
             $message.textContent = `졌습니다..이런날도 있는거죠 뭐..ㅠ`;
-            $rock.removeEventListener('click', clickButton);
-            $cscissor.removeEventListener('click', clickButton);
-            $paper.removeEventListener('click', clickButton);
+            $computer.style.background = `url(./rsplose.jpg) 0 0`;
         }
     </script>
 </body>
