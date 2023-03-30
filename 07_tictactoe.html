@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>틱택토 게임</title>
+    <style>
+        *{
+            text-align: center;
+        }
+        table{
+            border-collapse: collapse;
+            margin: auto;
+        }
+        td{
+            border: 1px solid black;
+            width: 40px;
+            height: 40px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>틱택토게임</h1>
+    <h6>당신이 선공(O)입니다.</h6>
+    <!--
+    <table>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>   
+    -->
+    <script>
+        const $table = document.createElement('table');
+        const $result = document.createElement('div');
+        let turn = 'O';
+        const rows = [];
+
+        const callback = (event) => {
+            if(event.target.textContent) return; //칸에 이미 글자 있음
+            event.target.textContent = turn;
+            if(turn === 'O'){// 턴넘기기
+                    turn = 'X';
+            }
+            else{
+                turn = 'O';
+            }
+        }
+
+        for(let i = 0; i<3; i++){
+            const $tr = document.createElement('tr');
+            const cells = [];
+            for(let j = 0; j<3; j++){
+                const $td = document.createElement('td')
+                cells.push($td);
+                $td.addEventListener('click', callback);
+                $tr.append($td);
+            }
+            $table.append($tr);
+            rows.push(cells);
+        }
+        document.body.append($table);
+        document.body.append($result);
+        
+    </script> 
+</body>
+</html>
