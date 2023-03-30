@@ -49,9 +49,74 @@
         let turn = 'O';
         const rows = [];
 
+        const checkWinner = (target) => {
+            let rowIndex;
+            let cellIndex;
+            rows.forEach((row, ri) => {
+                row.forEach((cell, ci) => {
+                    if(cell === target) {
+                        rowIndex = ri;
+                        cellIndex = ci;
+                    }
+                });
+            });
+            //세칸다채워졌나?
+            let hasWinner = false;
+            //가로줄검사
+            if(
+                rows[rowIndex][0].textContent === turn &&
+                rows[rowIndex][1].textContent === turn &&
+                rows[rowIndex][2].textContent === turn 
+            ){
+                hasWinner = true;
+            }
+            //세로줄 검사
+            if(
+                rows[0][cellIndex].textContent === turn &&
+                rows[1][cellIndex].textContent === turn &&
+                rows[2][cellIndex].textContent === turn 
+            ){
+                hasWinner = true;
+            }
+            //대각선 검사
+            if(
+                rows[0][0].textContent === turn &&
+                rows[1][1].textContent === turn &&
+                rows[2][2].textContent === turn 
+            ){
+                hasWinner = true;
+            }
+            if(
+                rows[0][2].textContent === turn &&
+                rows[1][1].textContent === turn &&
+                rows[2][0].textContent === turn 
+            ){
+                hasWinner = true;
+            }
+            return hasWinner;
+        };
+
         const callback = (event) => {
             if(event.target.textContent) return; //칸에 이미 글자 있음
             event.target.textContent = turn;
+            if(checkWinner(event.target)){
+                $result.textContent = `${turn}님이 승리!`;
+                $table.removeEventListener('click', callback);
+                return;
+            }
+            //무승부 > 칸이 꽉참
+            let draw = true;
+            rows.forEach((row) => {
+                row.forEach((cell) => {
+                    if(!cell.textContent){
+                        draw = false;
+                    }
+                });
+            });
+            if(draw){
+                $result.textContent = `무승부`;
+                return;
+            }
             if(turn === 'O'){// 턴넘기기
                     turn = 'X';
             }
@@ -66,16 +131,15 @@
             for(let j = 0; j<3; j++){
                 const $td = document.createElement('td')
                 cells.push($td);
-                $td.addEventListener('click', callback);
                 $tr.append($td);
             }
             $table.append($tr);
             rows.push(cells);
         }
+        $table.addEventListener('click', callback); //이벤트 버블링
         document.body.append($table);
         document.body.append($result);
         
     </script> 
 </body>
 </html>
-zz
