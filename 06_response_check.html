@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>반응속도 테스트</title>
+    <style>
+        *{
+            text-align: center;
+        }
+        #screen{
+            width: 300px;
+            height: 200px;
+            text-align: center;
+            user-select: none;
+            border-radius: 20px;
+            margin: auto;
+        }
+        #screen.waiting{
+            background-color: aqua;
+        }
+        #screen.ready{
+            background-color: red;
+            background-image: url('./run.gif');
+            color: white;
+        }
+        #screen.now{
+            background-color: greenyellow;
+        }
+        fieldset{
+            width: 300px;
+            border-radius: 10px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>반응 속도 테스트</h1>
+    <h6>참고로 농담곰의 반응속도는 170ms정도라고 합니다. 믿거나말거나</h6>
+    <div id="screen" class="waiting">클릭해서 시작하세요</div>
+    <div id="result"></div>
+    <br>
+    <fieldset>
+        <legend>당신의 기록</legend>
+        <div id="logs"></div>
+    </fieldset>
+    <script>
+        const $screen = document.querySelector('#screen');
+        const $result = document.querySelector('#result');
+        const $logs = document.querySelector('#logs');
+
+        let startTime;
+        let endTime;
+        const record = [];
+        let timeoutId;
+
+        $screen.addEventListener('click', function() {
+            if(event.target.classList.contains('waiting')){//파랑
+                $screen.classList.remove('waiting');
+                $screen.classList.add('ready');
+                $screen.textContent = '초록색이 되면 클릭하세요';
+                timeoutId = setTimeout(() => {
+                    startTime = new Date();
+                    $screen.classList.remove('ready');
+                    $screen.classList.add('now');
+                    $screen.textContent = '클릭하세요!';
+                    //첫 시간 재기
+                }, Math.floor(Math.random()* 1000) + 2000); // 2~3초
+            }
+            else if(event.target.classList.contains('ready')){//빨강
+                clearTimeout(timeoutId);
+                $screen.classList.remove('ready');
+                $screen.classList.add('waiting');
+                $screen.textContent = '너무 성급하시군요';
+            }
+            else if(event.target.classList.contains('now')){//초록
+                //끝 시간
+                //시간차이 저장
+                endTime = new Date();
+                const current = endTime - startTime;
+                record.push(current);
+                const average = record.reduce((a, c) => a + c) / record.length;
+                $result.textContent = `현재 ${current}ms, 평균: ${average}ms`;
+                const topfive = record.sort((a, b) => a - b).slice(0, 5);
+                $logs.textContent = '';
+                topfive.forEach((top, index) => {
+                    $logs.append(`${index + 1}위 ${top}ms`, document.createElement('br'));
+                })
+                $screen.classList.remove('now');
+                $screen.classList.add('waiting');
+                $screen.textContent = '클릭해서 시작하세요';
+            }
+        });
+    </script>
+</body>
+</html>
