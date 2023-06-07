@@ -10,4 +10,6 @@ link:  https://sjpark1120.github.io/zerocho_js
 + 05 가위바위보 link: https://sjpark1120.github.io/zerocho_js/05_rsp.html
 + 06 반응속도 테스트 link: https://sjpark1120.github.io/zerocho_js/06_response_check.html
 + 07 틱택토 게임 link: https://sjpark1120.github.io/zerocho_js/07_tictactoe.html
++ 08 텍스트 rpg 게임 link: https://sjpark1120.github.io/zerocho_js/08_text_rpg.html
++ 09 카드 뒤집기 게임 link: https://sjpark1120.github.io/zerocho_js/09_concentration.html
 
